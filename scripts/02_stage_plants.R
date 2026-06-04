@@ -20,6 +20,10 @@ plants_df <- data.frame(
   family = df$family,
   genus = df[,"genus"],
   species = df$specific_epithet,
+  accepted_name = df$accepted_scientific_name,
+  taxon_key = df$taxon_key,
+  english_name = df$generic_name,
+  created_at = Sys.time(),
   stringsAsFactors = FALSE
 )
 
