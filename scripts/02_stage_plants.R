@@ -23,6 +23,11 @@ plants_df <- data.frame(
   accepted_name = df$accepted_scientific_name,
   taxon_key = df$taxon_key,
   english_name = df$generic_name,
+  country = df$country,
+  kingdom = df$kingdom,
+  phylum = df$phylum,
+  taxon_rank = df$taxon_rank,
+  taxonomic_status = df$taxonomic_status,
   created_at = Sys.time(),
   stringsAsFactors = FALSE
 )
@@ -30,6 +35,9 @@ plants_df <- data.frame(
 
 # remove duplicates
 plants_df <- plants_df[!duplicated(plants_df$latin_name), ]
+
+# remove empty names
+plants_df <- plants_df[!is.na(plants_df$latin_name) & plants_df$latin_name != "", ]
 
 # write table
 dbExecute(con, "DROP TABLE IF EXISTS plants")
