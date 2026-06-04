@@ -8,7 +8,7 @@ con <- dbConnect(
 )
 
 sql <- "CREATE OR REPLACE VIEW plant_card_view AS
-SELECT
+SELECT DISTINCT
     p.plant_id,
     p.latin_name,
     p.accepted_name,
