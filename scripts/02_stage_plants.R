@@ -24,6 +24,9 @@ plants_df <- data.frame(
   family = plants_unique$family,
   genus = plants_unique$genus,
   taxon_key = plants_unique$taxonKey,
+  
+  english_name = plants_unique$genericName,
+  
   created_at = Sys.time(),
   stringsAsFactors = FALSE
 )

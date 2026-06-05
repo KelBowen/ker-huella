@@ -1,5 +1,13 @@
-.Rproj.user
+# database
+database/*.duckdb
+
+# R / RStudio
 .Rhistory
 .RData
-.Ruserdata
-.positai
+.Rproj.user/
+
+# generated outputs
+README.html
+
+# PBIX (optional - recommended)
+*.pbix
