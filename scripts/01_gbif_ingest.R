@@ -1,55 +1,57 @@
-# GBIF ingestion - first pipeline
-# -------------------------------
-# Goal:
-#   Pull one plant from GBIF and persist raw results into DuckDB
 
-source(here::here("scripts", "00_setup.R"))
+library(DBI)
+library(duckdb)
+library(here)
+library(rgbif)
+library(dplyr)
 
-suppressPackageStartupMessages({
-  library(rgbif)
-  library(jsonlite)
-})
+# connect
+con <- dbConnect(duckdb(), dbdir = here("database", "ker_huella.duckdb"))
 
-log_step("Starting GBIF ingestion test")
-
-# ---- Query plant ----
-plant_name <- "Urtica dioica"
-
-log_step(glue("Querying GBIF backbone for: {plant_name}"))
-backbone <- rgbif::name_backbone(name = plant_name)
-
-print(backbone)
-
-# ---- Get occurrence data ----
-log_step(glue("Querying GBIF occurrence data for: {plant_name}"))
-occ <- rgbif::occ_search(
-  scientificName = plant_name,
-  limit = 50
+# read plant list
+plant_list <- read.csv(
+  here("data", "raw", "plant_list.csv"),
+  stringsAsFactors = FALSE
 )
 
-occ_df <- occ$data
+# initialise collector
+all_occ <- NULL
 
-# ---- Clean names ----
-occ_df <- occ_df |>
-  janitor::clean_names()
+# loop through plants
+for (i in seq_len(nrow(plant_list))) {
+  
+  plant_name <- plant_list$latin_name[i]
+  
+  print(paste("Querying GBIF for:", plant_name))
+  
+  occ <- tryCatch(
+    occ_search(scientificName = plant_name, limit = 50),
+    error = function(e) NULL
+  )
+  
+  if (!is.null(occ) && !is.null(occ$data) && nrow(occ$data) > 0) {
+    
+    if (is.null(all_occ)) {
+      all_occ <- occ$data
+    } else {
+      all_occ <- bind_rows(all_occ, occ$data)
+    }
+    
+  }
+}
 
-# ---- Connect to DB ----
-con <- connect_db()
-on.exit(disconnect_db(con), add = TRUE)
+# stop if nothing returned
+if (is.null(all_occ)) {
+  stop("No data returned from GBIF")
+}
 
-# ---- Persist raw table ----
-table_name <- "raw_gbif_urtica_dioica"
+# write table
+dbExecute(con, "DROP TABLE IF EXISTS raw_gbif_plants")
+dbWriteTable(con, "raw_gbif_plants", all_occ)
 
-log_step(glue("Writing {nrow(occ_df)} rows to table: {table_name}"))
-dbWriteTable(
-  con,
-  name = table_name,
-  value = occ_df,
-  overwrite = TRUE
-)
+# verify
+result <- dbGetQuery(con, "SELECT COUNT(*) AS n FROM raw_gbif_plants")
+print(result)
 
-# ---- Quick verification ----
-row_count <- dbGetQuery(con, glue("SELECT COUNT(*) AS n FROM {table_name}"))
-print(row_count)
-
-log_step("GBIF ingestion test completed successfully.")
+# close
+dbDisconnect(con, shutdown = TRUE)

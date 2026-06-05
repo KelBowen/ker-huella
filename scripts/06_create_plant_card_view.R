@@ -14,8 +14,6 @@ SELECT DISTINCT
     p.accepted_name,
     p.family,
     p.genus,
-    p.species,
-    p.english_name,
     u.use_category,
     u.use_description,
     pr.preparation_type

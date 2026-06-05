@@ -1,50 +1,37 @@
-
 library(DBI)
 library(duckdb)
 library(here)
 
-# connect
 con <- dbConnect(
   duckdb(),
   dbdir = here("database", "ker_huella.duckdb")
 )
 
-# read raw table
-df <- dbReadTable(con, "raw_gbif_urtica_dioica")
+df <- dbReadTable(con, "raw_gbif_plants")
 
-# create plants table
+# keep rows with a usable scientific name
+df <- df[!is.na(df$scientificName) & df$scientificName != "", ]
+
+# one row per taxonKey where available, otherwise one row per scientificName
+df_with_key <- df[!is.na(df$taxonKey), ]
+plants_unique <- df_with_key[!duplicated(df_with_key$taxonKey), ]
+
+# simple plants table
 plants_df <- data.frame(
-  plant_id = paste0("PL_", seq_len(nrow(df))),
-  latin_name = df$scientific_name,
-  accepted_name = df$scientific_name,
-  family = df$family,
-  genus = df[,"genus"],
-  species = df$specific_epithet,
-  accepted_name = df$accepted_scientific_name,
-  taxon_key = df$taxon_key,
-  english_name = df$generic_name,
-  country = df$country,
-  kingdom = df$kingdom,
-  phylum = df$phylum,
-  taxon_rank = df$taxon_rank,
-  taxonomic_status = df$taxonomic_status,
+  plant_id = paste0("PL_", seq_len(nrow(plants_unique))),
+  latin_name = plants_unique$scientificName,
+  accepted_name = plants_unique$acceptedScientificName,
+  family = plants_unique$family,
+  genus = plants_unique$genus,
+  taxon_key = plants_unique$taxonKey,
   created_at = Sys.time(),
   stringsAsFactors = FALSE
 )
 
-
-# remove duplicates
-plants_df <- plants_df[!duplicated(plants_df$latin_name), ]
-
-# remove empty names
-plants_df <- plants_df[!is.na(plants_df$latin_name) & plants_df$latin_name != "", ]
-
-# write table
 dbExecute(con, "DROP TABLE IF EXISTS plants")
-dbWriteTable(con, "plants", plants_df)
+dbWriteTable(con, "plants", plants_df, overwrite = TRUE)
 
-# verify
+print(dbGetQuery(con, "SELECT COUNT(*) AS n FROM plants"))
 print(dbGetQuery(con, "SELECT * FROM plants"))
 
-# close
 dbDisconnect(con, shutdown = TRUE)
