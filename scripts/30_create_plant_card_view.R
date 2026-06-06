@@ -1,4 +1,10 @@
 
+# --------------------------------------------------
+# FINAL ASSEMBLY STEP
+# Always runs last in pipeline
+# Depends on all enrichment steps
+# --------------------------------------------------
+
 library(DBI)
 library(duckdb)
 library(here)

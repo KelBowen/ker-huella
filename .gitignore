@@ -2,6 +2,9 @@
 database/*.duckdb
 database/
 
+# raw data
+data/raw/
+
 # R / RStudio
 .Rhistory
 .RData

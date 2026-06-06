@@ -22,4 +22,3 @@ dbWriteTable(con, "plant_locations", plant_locations)
 print(dbGetQuery(con, "SELECT * FROM plant_locations"))
 
 dbDisconnect(con, shutdown = TRUE)
-``
