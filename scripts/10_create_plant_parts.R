@@ -1,3 +1,22 @@
+# ----------------------------------------
+# STAGE: MODEL BUILD
+# STEP: CREATE PLANT PARTS TABLE
+#
+# PURPOSE:
+# - Define plant anatomical structure
+# - Store harvestable parts (leaf, root, flower, etc.)
+#
+# INPUT:
+# - plants table
+#
+# OUTPUT:
+# - plant_parts table
+#
+# NOTES:
+# - Supports part-level use tracking
+# - Required for downstream uses and preparations
+# ----------------------------------------
+
 library(DBI)
 library(duckdb)
 library(here)

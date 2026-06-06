@@ -1,3 +1,21 @@
+# ----------------------------------------
+# STAGE: MODEL BUILD
+# STEP: CREATE PREPARATIONS TABLE
+#
+# PURPOSE:
+# - Define preparation methods (infusion, tincture, etc.)
+# - Link preparations to uses
+#
+# INPUT:
+# - uses table
+#
+# OUTPUT:
+# - preparations table
+#
+# NOTES:
+# - Does NOT include dosage (Phase 1 design constraint)
+# ----------------------------------------
+
 library(DBI)
 library(duckdb)
 library(here)

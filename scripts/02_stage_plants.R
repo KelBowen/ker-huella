@@ -1,3 +1,24 @@
+# ----------------------------------------
+# STAGE: INGESTION
+# STEP: PLANT STAGING & NORMALISATION
+#
+# PURPOSE:
+# - Clean and normalise GBIF plant data
+# - Create core 'plants' table
+#
+# INPUT:
+# - Raw GBIF ingestion data
+#
+# OUTPUT:
+# - plants table (core identity layer)
+#
+# FIELDS CREATED:
+# - latin_name, family, genus, taxon_key, etc.
+#
+# NOTES:
+# - This is the canonical plant identity table
+# ----------------------------------------
+
 library(DBI)
 library(duckdb)
 library(here)

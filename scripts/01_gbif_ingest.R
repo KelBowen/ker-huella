@@ -1,3 +1,24 @@
+# ----------------------------------------
+# STAGE: INGESTION
+# STEP: GBIF TAXONOMIC DATA INGESTION
+#
+# SOURCE:
+# - GBIF (Global Biodiversity Information Facility)
+# - API / dataset ingestion
+#
+# PURPOSE:
+# - Retrieve plant taxonomic backbone data
+# - Load raw plant records into staging tables
+#
+# INPUT:
+# - External GBIF data
+#
+# OUTPUT:
+# - Raw GBIF plant data (staging layer)
+#
+# NOTES:
+# - Primary source of plant identity
+# ----------------------------------------
 
 library(DBI)
 library(duckdb)

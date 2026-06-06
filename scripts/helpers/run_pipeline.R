@@ -1,4 +1,20 @@
 
+# ----------------------------------------
+# HELPER: PIPELINE EXECUTION
+#
+# PURPOSE:
+# - Execute full Ker-Huella pipeline in correct order
+#
+# USAGE:
+# source("scripts/helpers/run_pipeline.R")
+#
+# NOTES:
+# - Orchestrates all stages
+# - Does not contain transformation logic itself
+# ----------------------------------------
+
+
+
 cat("========================================\n")
 cat("KER-HUELLA PIPELINE START\n")
 cat("========================================\n\n")

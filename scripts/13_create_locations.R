@@ -1,3 +1,20 @@
+# ----------------------------------------
+# STAGE: MODEL BUILD
+# STEP: CREATE LOCATIONS TABLE
+#
+# PURPOSE:
+# - Define physical garden locations (beds, zones, etc.)
+#
+# INPUT:
+# - None (manual / structural table)
+#
+# OUTPUT:
+# - locations table
+#
+# NOTES:
+# - Represents real-world Ker-Huella garden structure
+# ----------------------------------------
+
 library(DBI)
 library(duckdb)
 library(here)

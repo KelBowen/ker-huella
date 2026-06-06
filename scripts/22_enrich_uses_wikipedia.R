@@ -1,3 +1,24 @@
+# ----------------------------------------
+# STAGE: ENRICHMENT
+# STEP: PLANT USES (Wikipedia)
+#
+# SOURCE:
+# - Wikipedia
+# - https://www.wikipedia.org/
+#
+# PURPOSE:
+# - Populate plant uses / summaries
+#
+# INPUT:
+# - plants.latin_name
+#
+# OUTPUT:
+# - plant_uses.wikipedia_summary
+#
+# NOTES:
+# - Provides general ethnobotanical context
+# - Not a clinical or medical source
+# ----------------------------------------
 
 library(DBI)
 library(duckdb)

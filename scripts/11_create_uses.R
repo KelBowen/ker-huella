@@ -1,3 +1,21 @@
+# ----------------------------------------
+# STAGE: MODEL BUILD
+# STEP: CREATE USES TABLE
+#
+# PURPOSE:
+# - Define plant uses (culinary, herbal, etc.)
+# - Link uses to plant parts
+#
+# INPUT:
+# - plant_parts table
+#
+# OUTPUT:
+# - uses table
+#
+# NOTES:
+# - Separates "what part" from "what it is used for"
+# ----------------------------------------
+
 library(DBI)
 library(duckdb)
 library(here)

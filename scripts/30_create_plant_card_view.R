@@ -1,5 +1,28 @@
 
-# --------------------------------------------------
+# ----------------------------------------
+# STAGE: OUTPUT
+# STEP: CREATE PLANT CARD VIEW
+#
+# PURPOSE:
+# - Combine all tables into final dataset
+# - Produce Power BI–ready view
+#
+# INPUT:
+# - plants
+# - plant_names
+# - plant_parts
+# - uses
+# - preparations
+# - plant_locations
+#
+# OUTPUT:
+# - plant_card_view (final dataset)
+#
+# NOTES:
+# - This is the primary analytical output
+# - Used for reporting and dashboards
+# ----------------------------------------
+
 # FINAL ASSEMBLY STEP
 # Always runs last in pipeline
 # Depends on all enrichment steps

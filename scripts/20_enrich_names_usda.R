@@ -1,3 +1,26 @@
+# ----------------------------------------
+# STAGE: ENRICHMENT
+# STEP: ENGLISH NAMES (USDA)
+#
+# SOURCE:
+# - USDA Plants database (or equivalent API)
+# - https://plants.usda.gov/
+#
+# PURPOSE:
+# - Populate English common names
+#
+# INPUT:
+# - plants.latin_name
+#
+# OUTPUT:
+# - plant_names.english_name
+#
+# NOTES:
+# - First naming layer
+# - One primary name per plant (Phase 1)
+# ----------------------------------------
+
+
 library(DBI)
 library(duckdb)
 library(here)

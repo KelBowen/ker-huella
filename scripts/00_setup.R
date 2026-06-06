@@ -1,7 +1,29 @@
-# Ker-Huella project setup
+# Ker-Huella Greenthumb project setup
 # ------------------------
 # Purpose:
 #   Shared setup for all ingestion / transformation scripts
+
+# ----------------------------------------
+# STAGE: SETUP
+# STEP: ENVIRONMENT INITIALISATION
+#
+# PURPOSE:
+# - Initialise project environment
+# - Load required libraries
+# - Establish database connection (DuckDB)
+#
+# INPUT:
+# - None
+#
+# OUTPUT:
+# - Active database connection
+# - Environment ready for pipeline execution
+#
+# NOTES:
+# - Must be run first in pipeline
+# - No data transformations performed
+# ----------------------------------------
+
 
 suppressPackageStartupMessages({
   library(DBI)

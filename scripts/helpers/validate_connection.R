@@ -1,3 +1,5 @@
+
+
 con <- DBI::dbConnect(
   duckdb::duckdb(),
   dbdir = here::here("database", "ker_huella.duckdb")

@@ -1,3 +1,22 @@
+# ----------------------------------------
+# STAGE: MODEL BUILD
+# STEP: CREATE PLANT-LOCATION RELATIONSHIP
+#
+# PURPOSE:
+# - Link plants to physical locations
+# - Track where plants exist in the garden
+#
+# INPUT:
+# - plants table
+# - locations table
+#
+# OUTPUT:
+# - plant_locations table
+#
+# NOTES:
+# - Enables spatial tracking and garden management
+# ----------------------------------------
+
 library(DBI)
 library(duckdb)
 library(here)

@@ -1,4 +1,20 @@
 
+# ----------------------------------------
+# STAGE: ENRICHMENT
+# STEP: FRENCH NAMES (eFlore / Algolia)
+#
+# SOURCE:
+# - Tela Botanica eFlore (Algolia search API)
+# - Endpoint: https://yotvbfebjc-dsn.algolia.net/...
+#
+# TARGET:
+# - plant_names.french_name
+#
+# NOTES:
+# - Uses search-based matching (not exact ID lookup)
+# - Primary field: common_name[1]
+# ----------------------------------------
+
 library(DBI)
 library(duckdb)
 library(here)
