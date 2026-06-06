@@ -21,19 +21,83 @@ plant_names <- dbReadTable(con, "plant_names")
 plant_uses <- dbReadTable(con, "plant_uses")
 
 # --------------------------------------------------
-# CLEAN EXISTING OBJECT (FIXES VIEW/TABLE CONFLICT)
+# DEBUG INPUT STRUCTURE
 # --------------------------------------------------
 
-dbExecute(con, "DROP VIEW IF EXISTS plant_card_view")
-dbExecute(con, "DROP TABLE IF EXISTS plant_card_view")
+cat("\n--- plant_names columns ---\n")
+print(names(plant_names))
+
+cat("\n--- plant_uses columns ---\n")
+print(names(plant_uses))
 
 # --------------------------------------------------
-# BUILD FINAL VIEW TABLE
+# ENSURE REQUIRED COLUMNS
+# --------------------------------------------------
+
+# names
+if (!"english_name" %in% names(plant_names)) {
+  cat("WARNING: english_name missing → creating NA column\n")
+  plant_names$english_name <- NA_character_
+}
+
+if (!"french_name" %in% names(plant_names)) {
+  plant_names$french_name <- NA_character_
+}
+
+# uses
+if (!"wikipedia_summary" %in% names(plant_uses)) {
+  plant_uses$wikipedia_summary <- NA_character_
+}
+
+# --------------------------------------------------
+# CLEAN EXISTING OBJECT (TABLE OR VIEW)
+# --------------------------------------------------
+
+try(dbExecute(con, "DROP VIEW plant_card_view"), silent = TRUE)
+try(dbExecute(con, "DROP TABLE plant_card_view"), silent = TRUE)
+
+# --------------------------------------------------
+# BUILD FINAL TABLE (CONTROL COLUMN COLLISIONS)
 # --------------------------------------------------
 
 plant_card_view <- plants |>
-  merge(plant_names, by = "plant_id", all.x = TRUE) |>
-  merge(plant_uses, by = "plant_id", all.x = TRUE)
+  merge(
+    plant_names[, c("plant_id", "english_name", "french_name")],
+    by = "plant_id",
+    all.x = TRUE,
+    suffixes = c("", "_usda")
+  ) |>
+  merge(
+    plant_uses[, c("plant_id", "wikipedia_summary")],
+    by = "plant_id",
+    all.x = TRUE
+  )
+
+# --------------------------------------------------
+# RESOLVE DUPLICATE NAME COLUMNS
+# --------------------------------------------------
+
+# If both exist, prefer USDA version
+if ("english_name_usda" %in% names(plant_card_view)) {
+  plant_card_view$english_name <- plant_card_view$english_name_usda
+  plant_card_view$english_name_usda <- NULL
+}
+
+# Remove GBIF / duplicate column if present
+if ("english_name.x" %in% names(plant_card_view)) {
+  plant_card_view$english_name.x <- NULL
+}
+
+if ("english_name.y" %in% names(plant_card_view)) {
+  names(plant_card_view)[names(plant_card_view) == "english_name.y"] <- "english_name"
+}
+
+# --------------------------------------------------
+# DEBUG FINAL STRUCTURE
+# --------------------------------------------------
+
+cat("\n--- plant_card_view columns ---\n")
+print(names(plant_card_view))
 
 # --------------------------------------------------
 # SAVE TABLE
@@ -47,24 +111,19 @@ dbWriteTable(
 )
 
 # --------------------------------------------------
-# VERIFY OUTPUT
+# VERIFY (SAFE — NO COLUMN ASSUMPTION)
 # --------------------------------------------------
 
 print(
   dbGetQuery(
     con,
-    "SELECT 
-        plant_id,
-        latin_name,
-        english_name,
-        substr(wikipedia_summary, 1, 120) AS summary_preview
-     FROM plant_card_view
-     LIMIT 10"
+    "SELECT * FROM plant_card_view LIMIT 10"
   )
 )
 
 # --------------------------------------------------
-# CLOSE CONNECTION
+# CLOSE
 # --------------------------------------------------
 
 dbDisconnect(con, shutdown = TRUE)
+
