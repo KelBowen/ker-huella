@@ -1,33 +1,35 @@
-
 # ----------------------------------------
 # HELPER: PIPELINE EXECUTION
 #
 # PURPOSE:
 # - Execute full Ker-Huella pipeline in correct order
+# - Provide clear stage-by-stage console output
 #
 # USAGE:
 # source("scripts/helpers/run_pipeline.R")
 #
 # NOTES:
-# - Orchestrates all stages
+# - Orchestrates all pipeline stages
 # - Does not contain transformation logic itself
 # ----------------------------------------
-
-
 
 cat("========================================\n")
 cat("KER-HUELLA PIPELINE START\n")
 cat("========================================\n\n")
 
+pipeline_start <- Sys.time()
+
 # ----------------------------------------
-# STAGE 00: SETUP & CONNECTION
+# STAGE 00: SETUP
 # ----------------------------------------
+
 cat("Stage 00: Setup\n")
 source("scripts/00_setup.R")
 
 # ----------------------------------------
 # STAGE 01: INGESTION
 # ----------------------------------------
+
 cat("\nStage 01: GBIF Ingestion\n")
 source("scripts/01_gbif_ingest.R")
 
@@ -37,6 +39,7 @@ source("scripts/02_stage_plants.R")
 # ----------------------------------------
 # STAGE 10: DATA MODEL BUILD
 # ----------------------------------------
+
 cat("\nStage 10: Create Plant Parts\n")
 source("scripts/10_create_plant_parts.R")
 
@@ -55,6 +58,7 @@ source("scripts/14_create_plant_locations.R")
 # ----------------------------------------
 # STAGE 20: ENRICHMENT
 # ----------------------------------------
+
 cat("\nStage 20: Enrich English Names (USDA)\n")
 source("scripts/20_enrich_names_usda.R")
 
@@ -65,11 +69,29 @@ cat("Stage 22: Enrich Uses (Wikipedia)\n")
 source("scripts/22_enrich_uses_wikipedia.R")
 
 # ----------------------------------------
+# STAGE 29: PIPELINE QUALITY & VALIDATION
+# ----------------------------------------
+
+cat("\nStage 29: Pipeline Data Quality\n")
+source("scripts/29_validate_pipeline_quality.R")
+
+# ----------------------------------------
 # STAGE 30: OUTPUT
 # ----------------------------------------
+
 cat("\nStage 30: Create Plant Card View\n")
 source("scripts/30_create_plant_card_view.R")
+
+# ----------------------------------------
+# COMPLETE
+# ----------------------------------------
+
+pipeline_end <- Sys.time()
+runtime <- round(difftime(pipeline_end, pipeline_start, units = "secs"), 1)
 
 cat("\n========================================\n")
 cat("KER-HUELLA PIPELINE COMPLETE ✅\n")
 cat("========================================\n")
+cat("Start time :", as.character(pipeline_start), "\n")
+cat("End time   :", as.character(pipeline_end), "\n")
+cat("Runtime    :", runtime, "seconds\n\n")
