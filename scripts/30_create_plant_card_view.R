@@ -1,158 +1,157 @@
 
 # ----------------------------------------
 # STAGE: OUTPUT
-# STEP: CREATE PLANT CARD VIEW
-#
-# PURPOSE:
-# - Combine all tables into final dataset
-# - Produce Power BI–ready view
-#
-# INPUT:
-# - plants
-# - plant_names
-# - plant_parts
-# - uses
-# - preparations
-# - plant_locations
-#
-# OUTPUT:
-# - plant_card_view (final dataset)
-#
-# NOTES:
-# - This is the primary analytical output
-# - Used for reporting and dashboards
+# STEP: plant_card_view already exists# STEP: CREATE PLANT CARD VIEW (PHASE 2)
+#   as either a TABLE or a VIEW
+# - This is the main consumption layer for Power BI
 # ----------------------------------------
 
-# FINAL ASSEMBLY STEP
-# Always runs last in pipeline
-# Depends on all enrichment steps
-# --------------------------------------------------
+source("scripts/00_setup.R")
 
-library(DBI)
-library(duckdb)
-library(here)
+cat("\n========================================\n")
+cat("STAGE 30: CREATE PLANT CARD VIEW (PHASE 2)\n")
+cat("========================================\n\n")
 
-# --------------------------------------------------
+# ----------------------------------------
 # CONNECT
-# --------------------------------------------------
+# ----------------------------------------
 
-con <- dbConnect(
-  duckdb(),
-  dbdir = here("database", "ker_huella.duckdb")
+con <- connect_db()
+
+# ----------------------------------------
+# CHECK REQUIRED TABLES
+# ----------------------------------------
+
+required_tables <- c(
+  "seed_plants",
+  "plant_locations",
+  "locations",
+  "plant_reference_raw",
+  "plant_reference_uses"
 )
 
-# --------------------------------------------------
-# LOAD TABLES
-# --------------------------------------------------
+missing <- setdiff(required_tables, dbListTables(con))
 
-plants <- dbReadTable(con, "plants")
-plant_names <- dbReadTable(con, "plant_names")
-plant_uses <- dbReadTable(con, "plant_uses")
-
-# --------------------------------------------------
-# DEBUG INPUT STRUCTURE
-# --------------------------------------------------
-
-cat("\n--- plant_names columns ---\n")
-print(names(plant_names))
-
-cat("\n--- plant_uses columns ---\n")
-print(names(plant_uses))
-
-# --------------------------------------------------
-# ENSURE REQUIRED COLUMNS
-# --------------------------------------------------
-
-# names
-if (!"english_name" %in% names(plant_names)) {
-  cat("WARNING: english_name missing → creating NA column\n")
-  plant_names$english_name <- NA_character_
+if (length(missing) > 0) {
+  disconnect_db(con)
+  stop("❌ Missing tables: ", paste(missing, collapse = ", "))
 }
 
-if (!"french_name" %in% names(plant_names)) {
-  plant_names$french_name <- NA_character_
+# ----------------------------------------
+# RESET EXISTING OBJECT SAFELY
+# ----------------------------------------
+
+object_info <- dbGetQuery(con, "
+SELECT table_name, table_type
+FROM information_schema.tables
+WHERE table_schema = 'main'
+  AND table_name = 'plant_card_view'
+")
+
+if (nrow(object_info) > 0) {
+  object_type <- object_info$table_type[1]
+  
+  if (object_type == "BASE TABLE") {
+    dbExecute(con, "DROP TABLE plant_card_view")
+    cat("✅ Dropped existing TABLE: plant_card_view\n")
+  } else if (object_type == "VIEW") {
+    dbExecute(con, "DROP VIEW plant_card_view")
+    cat("✅ Dropped existing VIEW: plant_card_view\n")
+  }
+} else {
+  cat("ℹ No existing plant_card_view found\n")
 }
 
-# uses
-if (!"wikipedia_summary" %in% names(plant_uses)) {
-  plant_uses$wikipedia_summary <- NA_character_
-}
+# ----------------------------------------
+# CREATE VIEW
+# ----------------------------------------
 
-# --------------------------------------------------
-# CLEAN EXISTING OBJECT (TABLE OR VIEW)
-# --------------------------------------------------
+dbExecute(con, "
+CREATE VIEW plant_card_view AS
 
-try(dbExecute(con, "DROP VIEW plant_card_view"), silent = TRUE)
-try(dbExecute(con, "DROP TABLE plant_card_view"), silent = TRUE)
+WITH location_agg AS (
+    SELECT 
+        pl.latin_name,
+        string_agg(l.location_name, ', ' ORDER BY l.location_name) AS locations
+    FROM plant_locations pl
+    LEFT JOIN locations l 
+        ON pl.location_id = l.location_id
+    GROUP BY pl.latin_name
+),
 
-# --------------------------------------------------
-# BUILD FINAL TABLE (CONTROL COLUMN COLLISIONS)
-# --------------------------------------------------
-
-plant_card_view <- plants |>
-  merge(
-    plant_names[, c("plant_id", "english_name", "french_name")],
-    by = "plant_id",
-    all.x = TRUE,
-    suffixes = c("", "_usda")
-  ) |>
-  merge(
-    plant_uses[, c("plant_id", "wikipedia_summary")],
-    by = "plant_id",
-    all.x = TRUE
-  )
-
-# --------------------------------------------------
-# RESOLVE DUPLICATE NAME COLUMNS
-# --------------------------------------------------
-
-# If both exist, prefer USDA version
-if ("english_name_usda" %in% names(plant_card_view)) {
-  plant_card_view$english_name <- plant_card_view$english_name_usda
-  plant_card_view$english_name_usda <- NULL
-}
-
-# Remove GBIF / duplicate column if present
-if ("english_name.x" %in% names(plant_card_view)) {
-  plant_card_view$english_name.x <- NULL
-}
-
-if ("english_name.y" %in% names(plant_card_view)) {
-  names(plant_card_view)[names(plant_card_view) == "english_name.y"] <- "english_name"
-}
-
-# --------------------------------------------------
-# DEBUG FINAL STRUCTURE
-# --------------------------------------------------
-
-cat("\n--- plant_card_view columns ---\n")
-print(names(plant_card_view))
-
-# --------------------------------------------------
-# SAVE TABLE
-# --------------------------------------------------
-
-dbWriteTable(
-  con,
-  "plant_card_view",
-  plant_card_view,
-  overwrite = TRUE
+use_flags AS (
+    SELECT 
+        latin_name,
+        MAX(CASE WHEN use_type = 'edible' THEN 1 ELSE 0 END) AS edible_flag,
+        MAX(CASE WHEN use_type = 'medicinal' THEN 1 ELSE 0 END) AS medicinal_flag
+    FROM plant_reference_uses
+    GROUP BY latin_name
 )
 
-# --------------------------------------------------
-# VERIFY (SAFE — NO COLUMN ASSUMPTION)
-# --------------------------------------------------
+SELECT 
+    sp.latin_name,
+    sp.common_name,
+    sp.status_name,
+    sp.plant_type_name,
 
-print(
-  dbGetQuery(
-    con,
-    "SELECT * FROM plant_card_view LIMIT 10"
-  )
-)
+    la.locations,
 
-# --------------------------------------------------
-# CLOSE
-# --------------------------------------------------
+    COALESCE(pr.edible_uses, '') AS edible_uses,
+    COALESCE(pr.medicinal_uses, '') AS medicinal_uses,
+    COALESCE(pr.hazards, '') AS hazards,
 
-dbDisconnect(con, shutdown = TRUE)
+    COALESCE(uf.edible_flag, 0) AS edible_flag,
+    COALESCE(uf.medicinal_flag, 0) AS medicinal_flag
 
+FROM seed_plants sp
+
+LEFT JOIN location_agg la 
+    ON sp.latin_name = la.latin_name
+
+LEFT JOIN plant_reference_raw pr 
+    ON sp.latin_name = pr.latin_name
+
+LEFT JOIN use_flags uf 
+    ON sp.latin_name = uf.latin_name
+")
+
+cat("✅ plant_card_view created\n\n")
+
+# ----------------------------------------
+# VERIFY
+# ----------------------------------------
+
+schema <- dbGetQuery(con, "PRAGMA table_info('plant_card_view')")
+print(schema)
+
+# ----------------------------------------
+# CLEANUP
+# ----------------------------------------
+
+disconnect_db(con)
+
+cat("\n========================================\n")
+cat("STAGE 30 COMPLETE ✅\n")
+cat("========================================\n")
+
+#
+# PURPOSE:
+# - Create unified plant view for Power BI and queries
+# - Combine operational data + PFAF enrichment + parsed uses
+#
+# SCOPE:
+# - Input:
+#     seed_plants
+#     plant_locations
+#     locations
+#     plant_reference_raw
+#     plant_reference_uses
+#
+# - Output:
+#     plant_card_view (view)
+#
+# USAGE:
+# source("scripts/30_create_plant_card_view.R")
+#
+# NOTES:
+# - Replaces legacy Phase 1 plant_card_view

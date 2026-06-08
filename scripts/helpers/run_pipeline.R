@@ -1,20 +1,39 @@
+
 # ----------------------------------------
-# HELPER: PIPELINE EXECUTION
+# SCRIPT: run_pipeline.R
 #
 # PURPOSE:
-# - Execute full Ker-Huella pipeline in correct order
-# - Provide clear stage-by-stage console output
+# - Execute full Ker-Huella Phase 2 data pipeline
+# - Orchestrate ingestion, enrichment, parsing, validation, and output
+#
+# SCOPE:
+# - Input:
+#     SharePoint export (seed_plants)
+#     External PFAF data
+#
+# - Output:
+#     plant_card_view (final dataset for Power BI)
+#     pipeline validation tables/views
 #
 # USAGE:
-# source("scripts/helpers/run_pipeline.R")
+# source("scripts/run_pipeline.R")
 #
 # NOTES:
-# - Orchestrates all pipeline stages
-# - Does not contain transformation logic itself
+# - This script is an orchestrator ONLY (no transformation logic)
+# - Phase 1 pipeline has been fully deprecated and archived
+# - All stages rely on shared setup (00_setup.R) for DB connectivity
+#
+# PIPELINE STAGES:
+# 00 → Setup
+# 03 → Operational ingestion (SharePoint)
+# 20 → PFAF enrichment (cached)
+# 21 → PFAF parsing (structured uses)
+# 30 → Output view (plant_card_view)
+# 29 → Validation (pipeline health + metrics)
 # ----------------------------------------
 
 cat("========================================\n")
-cat("KER-HUELLA PIPELINE START\n")
+cat("KER-HUELLA PIPELINE START (PHASE 2)\n")
 cat("========================================\n\n")
 
 pipeline_start <- Sys.time()
@@ -26,54 +45,34 @@ pipeline_start <- Sys.time()
 cat("Stage 00: Setup\n")
 source("scripts/00_setup.R")
 
-# ----------------------------------------
-# STAGE 01: INGESTION
-# ----------------------------------------
+# ========================================
+# PHASE 2: OPERATIONAL + PFAF
+# ========================================
 
-cat("\nStage 01: GBIF Ingestion\n")
-source("scripts/01_gbif_ingest.R")
-
-cat("Stage 02: Stage Plants\n")
-source("scripts/02_stage_plants.R")
+cat("\n----------------------------------------\n")
+cat("PHASE 2: OPERATIONAL + PFAF\n")
+cat("----------------------------------------\n")
 
 # ----------------------------------------
-# STAGE 10: DATA MODEL BUILD
+# STAGE 03: INGESTION
 # ----------------------------------------
 
-cat("\nStage 10: Create Plant Parts\n")
-source("scripts/10_create_plant_parts.R")
-
-cat("Stage 11: Create Uses\n")
-source("scripts/11_create_uses.R")
-
-cat("Stage 12: Create Preparations\n")
-source("scripts/12_create_preparations.R")
-
-cat("Stage 13: Create Locations\n")
-source("scripts/13_create_locations.R")
-
-cat("Stage 14: Create Plant Locations\n")
-source("scripts/14_create_plant_locations.R")
+cat("\nStage 03: Ingest SharePoint Data\n")
+source("scripts/03_ingest_operational_data.R")
 
 # ----------------------------------------
-# STAGE 20: ENRICHMENT
+# STAGE 20: ENRICHMENT (PFAF)
 # ----------------------------------------
 
-cat("\nStage 20: Enrich English Names (USDA)\n")
-source("scripts/20_enrich_names_usda.R")
-
-cat("Stage 21: Enrich French Names (eFlore Algolia)\n")
-source("scripts/21_enrich_names_french_algolia.R")
-
-cat("Stage 22: Enrich Uses (Wikipedia)\n")
-source("scripts/22_enrich_uses_wikipedia.R")
+cat("\nStage 20: PFAF Enrichment\n")
+source("scripts/20_enrich_pfaf.R")
 
 # ----------------------------------------
-# STAGE 29: PIPELINE QUALITY & VALIDATION
+# STAGE 21: STRUCTURING (PARSE USES)
 # ----------------------------------------
 
-cat("\nStage 29: Pipeline Data Quality\n")
-source("scripts/29_validate_pipeline_quality.R")
+cat("\nStage 21: Parse PFAF Uses\n")
+source("scripts/21_parse_pfaf_uses.R")
 
 # ----------------------------------------
 # STAGE 30: OUTPUT
@@ -81,6 +80,13 @@ source("scripts/29_validate_pipeline_quality.R")
 
 cat("\nStage 30: Create Plant Card View\n")
 source("scripts/30_create_plant_card_view.R")
+
+# ----------------------------------------
+# STAGE 29: VALIDATION
+# ----------------------------------------
+
+cat("\nStage 29: Pipeline Validation\n")
+source("scripts/29_validate_pipeline_quality.R")
 
 # ----------------------------------------
 # COMPLETE

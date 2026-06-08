@@ -1,8 +1,3 @@
-# Ker-Huella Greenthumb project setup
-# ------------------------
-# Purpose:
-#   Shared setup for all ingestion / transformation scripts
-
 # ----------------------------------------
 # STAGE: SETUP
 # STEP: ENVIRONMENT INITIALISATION
@@ -24,7 +19,6 @@
 # - No data transformations performed
 # ----------------------------------------
 
-
 suppressPackageStartupMessages({
   library(DBI)
   library(duckdb)
@@ -36,7 +30,6 @@ suppressPackageStartupMessages({
   library(lubridate)
 })
 
-# ---- Project options ----
 options(
   stringsAsFactors = FALSE,
   scipen = 999
@@ -70,11 +63,20 @@ ensure_project_dirs <- function() {
 # ---- Database connection helper ----
 connect_db <- function(read_only = FALSE) {
   ensure_project_dirs()
-  dbConnect(
+  
+  if (!file.exists(PATHS$db_file)) {
+    file.create(PATHS$db_file)
+  }
+  
+  log_step(glue("Connecting to DB: {PATHS$db_file}"))
+  
+  con <- dbConnect(
     duckdb::duckdb(),
-    dbdir = PATHS$db_file,
+    dbdir = PATHS[["db_file"]],
     read_only = read_only
   )
+  
+  return(con)
 }
 
 # ---- Safe disconnect ----
@@ -90,6 +92,3 @@ log_step <- function(msg) {
 # ---- Initialise project ----
 ensure_project_dirs()
 log_step("Project setup loaded successfully.")
-
-
-

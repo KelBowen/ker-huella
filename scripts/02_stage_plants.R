@@ -4,58 +4,78 @@
 #
 # PURPOSE:
 # - Clean and normalise GBIF plant data
-# - Create core 'plants' table
+# - Create reference 'plants' table (legacy)
 #
-# INPUT:
-# - Raw GBIF ingestion data
-#
-# OUTPUT:
-# - plants table (core identity layer)
-#
-# FIELDS CREATED:
-# - latin_name, family, genus, taxon_key, etc.
+# SCOPE:
+# - Input:
+#     raw_gbif_plants
+# - Output:
+#     plants (reference table, NOT source of truth)
 #
 # NOTES:
-# - This is the canonical plant identity table
+# - Phase 1 legacy table
+# - Do NOT use as canonical identity in Phase 2
 # ----------------------------------------
 
-library(DBI)
-library(duckdb)
-library(here)
+source("scripts/00_setup.R")
 
-con <- dbConnect(
-  duckdb(),
-  dbdir = here("database", "ker_huella.duckdb")
-)
+library(dplyr)
+
+con <- connect_db()
+
+# ---- check input exists ----
+if (!"raw_gbif_plants" %in% dbListTables(con)) {
+  disconnect_db(con)
+  stop("❌ raw_gbif_plants not found. Run Stage 01 first.")
+}
 
 df <- dbReadTable(con, "raw_gbif_plants")
 
-# keep rows with a usable scientific name
+# ---- clean ----
 df <- df[!is.na(df$scientificName) & df$scientificName != "", ]
 
-# one row per taxonKey where available, otherwise one row per scientificName
+# ---- dedup logic ----
 df_with_key <- df[!is.na(df$taxonKey), ]
-plants_unique <- df_with_key[!duplicated(df_with_key$taxonKey), ]
+df_no_key <- df[is.na(df$taxonKey), ]
 
-# simple plants table
+plants_key <- df_with_key[!duplicated(df_with_key$taxonKey), ]
+plants_name <- df_no_key[!duplicated(df_no_key$scientificName), ]
+
+plants_unique <- rbind(plants_key, plants_name)
+
+# ---- safe field extraction ----
+accepted_name <- if ("acceptedScientificName" %in% names(plants_unique)) {
+  plants_unique$acceptedScientificName
+} else {
+  NA_character_
+}
+
+english_name <- if ("genericName" %in% names(plants_unique)) {
+  plants_unique$genericName
+} else {
+  NA_character_
+}
+
+# ---- build table ----
 plants_df <- data.frame(
   plant_id = paste0("PL_", seq_len(nrow(plants_unique))),
   latin_name = plants_unique$scientificName,
-  accepted_name = plants_unique$acceptedScientificName,
+  accepted_name = accepted_name,
   family = plants_unique$family,
   genus = plants_unique$genus,
   taxon_key = plants_unique$taxonKey,
-  
-  english_name = plants_unique$genericName,
-  
+  english_name = english_name,
   created_at = Sys.time(),
   stringsAsFactors = FALSE
 )
 
+# ---- write ----
 dbExecute(con, "DROP TABLE IF EXISTS plants")
 dbWriteTable(con, "plants", plants_df, overwrite = TRUE)
 
+# ---- verify ----
 print(dbGetQuery(con, "SELECT COUNT(*) AS n FROM plants"))
-print(dbGetQuery(con, "SELECT * FROM plants"))
 
-dbDisconnect(con, shutdown = TRUE)
+disconnect_db(con)
+
+log_step("Plant staging (GBIF) complete ✅")
