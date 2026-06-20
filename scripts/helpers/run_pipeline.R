@@ -1,103 +1,176 @@
-
 # ----------------------------------------
-# SCRIPT: run_pipeline.R
+# STAGE: DEPLOYMENT / DATAMART
+# STEP: CREATE BI DATABASE COPY
 #
 # PURPOSE:
-# - Execute full Ker-Huella Phase 2 data pipeline
-# - Orchestrate ingestion, enrichment, parsing, validation, and output
+# - Create a stable, read-only copy of the DuckDB database
+# - Provide a clean datamart layer for Power BI
 #
-# SCOPE:
-# - Input:
-#     SharePoint export (seed_plants)
-#     External PFAF data
+# INPUT:
+# - database/ker_huella.duckdb
 #
-# - Output:
-#     plant_card_view (final dataset for Power BI)
-#     pipeline validation tables/views
-#
-# USAGE:
-# source("scripts/run_pipeline.R")
+# OUTPUT:
+# - database/ker_huella_bi.duckdb
 #
 # NOTES:
-# - This script is an orchestrator ONLY (no transformation logic)
-# - Phase 1 pipeline has been fully deprecated and archived
-# - All stages rely on shared setup (00_setup.R) for DB connectivity
-#
-# PIPELINE STAGES:
-# 00 → Setup
-# 03 → Operational ingestion (SharePoint)
-# 20 → PFAF enrichment (cached)
-# 21 → PFAF parsing (structured uses)
-# 30 → Output view (plant_card_view)
-# 29 → Validation (pipeline health + metrics)
+# - Must run AFTER pipeline completes
+# - Releases DB lock before copying
+# - Gives a clear error if the BI DB is locked by another process
 # ----------------------------------------
 
-cat("========================================\n")
-cat("KER-HUELLA PIPELINE START (PHASE 2)\n")
-cat("========================================\n\n")
-
-pipeline_start <- Sys.time()
-
-# ----------------------------------------
-# STAGE 00: SETUP
-# ----------------------------------------
-
-cat("Stage 00: Setup\n")
 source("scripts/00_setup.R")
 
-# ========================================
-# PHASE 2: OPERATIONAL + PFAF
-# ========================================
-
-cat("\n----------------------------------------\n")
-cat("PHASE 2: OPERATIONAL + PFAF\n")
-cat("----------------------------------------\n")
+cat("\n========================================\n")
+cat("STAGE 99: CREATE BI DATAMART COPY\n")
+cat("========================================\n\n")
 
 # ----------------------------------------
-# STAGE 03: INGESTION
+# DEFINE PATHS
 # ----------------------------------------
 
-cat("\nStage 03: Ingest SharePoint Data\n")
-source("scripts/03_ingest_operational_data.R")
+source_db <- here::here("database", "ker_huella.duckdb")
+bi_db <- here::here("database", "ker_huella_bi.duckdb")
+tmp_bi_db <- here::here("database", "ker_huella_bi_tmp.duckdb")
 
 # ----------------------------------------
-# STAGE 20: ENRICHMENT (PFAF)
+# RELEASE ANY OPEN CONNECTIONS
 # ----------------------------------------
 
-cat("\nStage 20: PFAF Enrichment\n")
-source("scripts/20_enrich_pfaf.R")
+cat("Releasing any existing database connections...\n")
+
+try({
+  DBI::dbDisconnect(con, shutdown = TRUE)
+}, silent = TRUE)
+
+try({
+  existing_cons <- DBI::dbListConnections(duckdb::duckdb())
+  for (c in existing_cons) {
+    try(DBI::dbDisconnect(c, shutdown = TRUE), silent = TRUE)
+  }
+}, silent = TRUE)
+
+cat("✅ Connections released (if any existed)\n")
 
 # ----------------------------------------
-# STAGE 21: STRUCTURING (PARSE USES)
+# VALIDATE SOURCE DB EXISTS
 # ----------------------------------------
 
-cat("\nStage 21: Parse PFAF Uses\n")
-source("scripts/21_parse_pfaf_uses.R")
+if (!file.exists(source_db)) {
+  stop("❌ Source database not found: ", source_db)
+}
+
+source_size <- file.info(source_db)$size
+cat("Source DB size:", source_size, "bytes\n")
 
 # ----------------------------------------
-# STAGE 30: OUTPUT
+# CLEAN TEMP FILE
 # ----------------------------------------
 
-cat("\nStage 30: Create Plant Card View\n")
-source("scripts/30_create_plant_card_view.R")
+if (file.exists(tmp_bi_db)) {
+  unlink(tmp_bi_db, force = TRUE)
+}
 
 # ----------------------------------------
-# STAGE 29: VALIDATION
+# COPY TO TEMP FIRST
 # ----------------------------------------
 
-cat("\nStage 29: Pipeline Validation\n")
-source("scripts/29_validate_pipeline_quality.R")
+cat("Creating temporary BI database copy...\n")
+
+tmp_success <- file.copy(
+  from = source_db,
+  to = tmp_bi_db,
+  overwrite = TRUE
+)
+
+if (!tmp_success || !file.exists(tmp_bi_db)) {
+  stop("❌ Failed to create temporary BI database copy")
+}
+
+cat("✅ Temporary copy created\n")
 
 # ----------------------------------------
-# COMPLETE
+# REPLACE BI DB
 # ----------------------------------------
 
-pipeline_end <- Sys.time()
-runtime <- round(difftime(pipeline_end, pipeline_start, units = "secs"), 1)
+if (file.exists(bi_db)) {
+  remove_success <- tryCatch(
+    {
+      unlink(bi_db, force = TRUE)
+      !file.exists(bi_db)
+    },
+    warning = function(e) FALSE,
+    error = function(e) FALSE
+  )
+  
+  if (!remove_success) {
+    stop(
+      "❌ Could not replace BI database file. ",
+      "The file is likely open or locked (for example by Power BI or sync software): ",
+      bi_db
+    )
+  }
+}
+
+rename_success <- file.rename(tmp_bi_db, bi_db)
+
+if (!rename_success || !file.exists(bi_db)) {
+  stop(
+    "❌ Failed to move temporary BI database into place: ",
+    bi_db
+  )
+}
+
+# ----------------------------------------
+# VALIDATE COPY
+# ----------------------------------------
+
+bi_size <- file.info(bi_db)$size
+cat("BI DB size:", bi_size, "bytes\n")
+
+if (bi_size == 0) {
+  stop("❌ BI database is empty — copy failed")
+}
+
+if (!is.na(source_size) && !is.na(bi_size) && bi_size != source_size) {
+  warning("⚠️ BI database size differs from source (may still be valid)")
+} else {
+  cat("✅ BI database size matches source\n")
+}
+
+# ----------------------------------------
+# SMOKE TEST
+# ----------------------------------------
+
+cat("Verifying BI database contents...\n")
+
+con_bi <- DBI::dbConnect(
+  duckdb::duckdb(),
+  dbdir = bi_db,
+  read_only = TRUE
+)
+
+tables <- DBI::dbListTables(con_bi)
+
+cat("Tables found in BI database:\n")
+print(tables)
+
+required_tables <- c(
+  "plant_card_view",
+  "pipeline_data_quality",
+  "pipeline_last_run"
+)
+
+missing_tables <- setdiff(required_tables, tables)
+
+if (length(missing_tables) > 0) {
+  warning("⚠️ Some expected tables are missing:")
+  print(missing_tables)
+} else {
+  cat("✅ All key tables present\n")
+}
+
+DBI::dbDisconnect(con_bi, shutdown = TRUE)
 
 cat("\n========================================\n")
-cat("KER-HUELLA PIPELINE COMPLETE ✅\n")
-cat("========================================\n")
-cat("Start time :", as.character(pipeline_start), "\n")
-cat("End time   :", as.character(pipeline_end), "\n")
-cat("Runtime    :", runtime, "seconds\n\n")
+cat("BI DATAMART READY ✅\n")
+cat("========================================\n\n")

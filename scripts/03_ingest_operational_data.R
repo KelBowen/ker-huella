@@ -48,15 +48,27 @@ print(names(plants_input))
 # RENAME COLUMNS
 # ----------------------------
 
+# ----------------------------
+# STANDARDISE + RENAME COLUMNS ✅
+# ----------------------------
+
+# 1. Clean column names (lowercase, underscores, no spaces)
+plants_input <- plants_input %>%
+  janitor::clean_names()
+
+log_step("Column names after cleaning:")
+print(names(plants_input))
+
+# 2. Rename to internal schema (only if needed)
 plants_input <- plants_input %>%
   rename(
-    latin_name   = LatinName,
-    common_name  = CommonName,
-    status       = Status,
-    plant_type   = PlantType,
-    location_raw = Location,
-    notes        = Notes,
-    date_added   = DateAdded
+    latin_name   = latin_name,
+    common_name  = common_name,
+    status       = status,
+    plant_type   = plant_type,
+    location_raw = location,
+    notes        = notes,
+    date_added   = created
   )
 
 # ----------------------------
