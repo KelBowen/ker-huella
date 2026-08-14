@@ -1,34 +1,176 @@
-﻿"Latin Name","Common Name","Status","Plant type","Location","Notes","Created"
-"Achillea millefolium","Common yarrow","Planted","Herb",,,"6/7/2026 4:17 AM"
-"Allium schoenoprasum","Chives","Planted","Bulb","[""Jardin de cuisine"",""Jardin d'hiver""]",,"6/7/2026 4:17 AM"
-"Allium triquetrum","Three-cornered leek","Planted","Bulb","[""Jardin de cuisine"",""Jardin formale"",""La forest""]",,"6/7/2026 4:17 AM"
-"Calendula officinalis","Calendula","Planted","Herb","[""Jardin d'hiver""]",,"6/7/2026 4:17 AM"
-"Campanula poscharskyana","Serbian bellflower","Planted","Herb","[""Champs de tournoi"",""Jardin formale""]",,"6/7/2026 4:17 AM"
-"Cistus populifolius","Poplar-leaved cistus","Planted","Herb",,,"6/7/2026 4:17 AM"
-"Geranium molle","Dove's-foot crane's-bill","Planted","Creeper (horizontal)",,,"6/7/2026 4:17 AM"
-"Laurus nobilis","Bay laurel","Planted","Bush","[""La remise"",""Jardin formale""]",,"6/7/2026 4:17 AM"
-"Malus pumila","Apple","Planted","Tree","[""Jardin formale""]",,"6/7/2026 4:17 AM"
-"Melissa officinalis","Lemon balm","Planted","Herb",,,"6/7/2026 4:17 AM"
-"Mentha piperita","Peppermint","Planted","Herb","[""Jardin d'hiver""]",,"6/7/2026 4:17 AM"
-"Plantago lanceolata","Plantain","Planted","Herb",,,"6/7/2026 4:17 AM"
-"Primula acaulis","Primrose","Planted","Herb",,,"6/7/2026 4:17 AM"
-"Prunus domestica","Plum","Planted","Tree",,,"6/7/2026 4:17 AM"
-"Prunus spinosa","Sloe tree","Planted","Tree",,,"6/7/2026 4:17 AM"
-"Pyrus pyrifolia","Asian pear","Planted","Tree","[""Champs de tournoi""]",,"6/7/2026 4:17 AM"
-"Rheum rhabarbarum","Rhubarb","Planted","Rhyzome","[""Jardin formale""]",,"6/7/2026 4:17 AM"
-"Rose canina","Dog rose","Planted","Bush",,,"6/7/2026 4:17 AM"
-"Rosa spinosissima","Burnet rose","Planted","Bush",,,"6/7/2026 4:17 AM"
-"Salix triandra","Almond willow","Planted","Bush",,,"6/7/2026 4:17 AM"
-"Salvia rosmarinus","Rosemary","Planted","Bush","[""Jardin de cuisine"",""Jardin formale""]",,"6/7/2026 4:17 AM"
-"Sambucus nigra","Black elderberry","Planted","Tree","[""La forest""]",,"6/7/2026 4:17 AM"
-"Sonchus oleraceus","Sowthistle","Planted","Herb",,,"6/7/2026 4:17 AM"
-"Stellaria media","Chickweed","Planted","Herb",,,"6/7/2026 4:17 AM"
-"Taraxacum officinale","Dandelion","Planted","Creeper (horizontal)",,,"6/7/2026 4:17 AM"
-"Thymus vulgaris","Thyme","Planted","Herb","[""Jardin de cuisine"",""Jardin d'hiver""]",,"6/7/2026 4:17 AM"
-"Umbilicus rupestris","Navelword","Planted","Herb",,,"6/7/2026 4:17 AM"
-"Urtica dioica","Stinging nettle","Planted","Herb",,,"6/7/2026 4:17 AM"
-"Pseudosasa japonica","Arrow bamboo","Planted","Tree","[""La remise""]",,"6/20/2026 8:19 AM"
-"Ligustrum ovalifolium","California privet","Planted","Tree",,,"6/20/2026 8:19 AM"
-"Arnica montana","Mountain tobacco","Planted","Herb","[""Jardin d'hiver""]",,"6/20/2026 8:20 AM"
-"Prunella vulgaris","Common selfheal","Planted","Herb",,,"6/20/2026 8:21 AM"
-"Salvia officinalis","Common sage","Planted","Bush","[""Potager"",""Jardin d'hiver""]",,"6/20/2026 8:42 AM"
+﻿"Latin Name","English Name","French Name","Native","Status","Plant type","Location","Notes"
+"acacia dealbata","Silver wattle","Mimosa d'hiver ","False","Plantée","Tree (feuillus)","[""Foret""]",
+"acer pseudoplatanus","Sycamore","Sycomore","True","Plantée","Tree (feuillus)","[""Foret""]",
+"achillea millefolium","Common yarrow","Achillée millefeuille","True","Prévu","Plant, medicinal (plante médicinale)","[""Prairie fleurie"",""Jardin medicinale""]",
+"aesculus hippocastanum","Horse chesnut","Marron","False","Plantée","Tree (feuillus)","[""Foret""]",
+"agapanthus praecox","African lilly","Lille d'Afrique","False","Plantée","Bulb (bulbe)","[""Jardin de cuisine""]",
+"Allium cepa var. aggregatum","Shallots","Echalote","True","Prévu","Bulb (bulbe)","[""Potager"",""Jardin de cuisine""]",
+"Allium cepa var. Roscoff","Onions (roscoff)","Oignon de Roscoff","True","Prévu","Bulb (bulbe)","[""Potager"",""Jardin de cuisine""]",
+"Allium porum","Leek","Poireau","True","Prévu","Plant, biennial (bienniel)","[""Potager""]",
+"Allium sativum","Garlic","Ail","True","Prévu","Bulb (bulbe)","[""Jardin de cuisine"",""Potager""]",
+"allium schoenoprasum","Chives","Ciboulette","True","Plantée","Bulb (bulbe)","[""Jardin de cuisine"",""Jardin d'hiver""]",
+"allium triquetrum","Three-cornered leek","Ail triquètre","True","Sauvage","Bulb (bulbe)","[""Jardin de cuisine"",""Partout""]",
+"allium ursinum","Wild garlic","Ail sauvage","True","Plantée","Bulb (bulbe)","[""Jardin de cuisine""]",
+"aquilegia vulgaris","Common columbine","Ancolie","True","Sauvage","Plant, perenniel (Vivace)","[""Partout""]",
+"Arnica montana","Mountain tobacco","Arnica","True","Plantée","Plant, medicinal (plante médicinale)","[""Jardin d'hiver"",""Jardin medicinale""]",
+"Artemesia arborescence ","Shrubby wormwood","Armoise absinthe","True","Plantée","Bush, evergreen (arbuste persistant)","[""Jardin d'hiver""]",
+"Artemisia dracunculus","Tarragon","Estragon","False","Prévu","Herb, culinary (plante aromatique)","[""Jardin de cuisine"",""Jardin d'hiver""]",
+"arum italicum","Lords-and-ladies","Arum tachete","False","Sauvage","Plant, perenniel (Vivace)","[""Foret""]",
+"arum maculatum","Cuckoo pint","Arum macule","True","Sauvage","Creeper, horizontal (rampante)","[""Prairie fleurie""]",
+"asplenium scolopendrium","Hart's-tongue fern","Fougère langue de cerf","True","Sauvage","Plant, perenniel (Vivace)","[""Partout""]",
+"astragalus membranaceus","Milk vetch","Vesce lactée","False","Prévu","Plant, perenniel (Vivace)","[""Prairie fleurie""]",
+"aucuba japonica","Japanese laurel","Laurier","False","Plantée","Bush, evergreen (arbuste persistant)","[""Jardin de cuisine"",""Jardin d'entree""]",
+"bellis perennis","Common daisy","Marguerite commun","True","Prévu","Plant, perenniel (Vivace)","[""Prairie fleurie""]",
+"Beta vulgaris","Beet","Betterave","True","Prévu","Bulb (bulbe)","[""Potager""]",
+"borago officinalis","Common borage","Bourrache","True","Sauvage","Herb, culinary (plante aromatique)","[""Jardin de cuisine"",""Jardin medicinale""]",
+"Brassica oleracea var. botrytis","Cauliflower","Chou-fleur","False","Prévu","Plant, perenniel (Vivace)","[""Potager""]",
+"Brassica oleracea var. botrytis romanesco","Cabbage, romanesco","Chou Romanesco","False","Prévu","Plant, biennial (bienniel)","[""Potager""]",
+"Brassica oleracea var. capitata f. acuta","Cabbage, heart","Chou","False","Prévu","Plant, biennial (bienniel)","[""Potager""]",
+"Brassica oleracea var. sabellica","Kale","Chou frisé","False","Prévu","Plant, biennial (bienniel)","[""Potager""]",
+"Brassica oleracea var. viridis","Collard greens","Chou cavalier","False","Prévu","Plant, biennial (bienniel)","[""Potager""]",
+"Brassica oleracea capitata","Cabbage, white","Chou","False","Prévu","Plant, biennial (bienniel)","[""Potager""]",
+"Brassica rapa rapa","Turnips","Navet","False","Prévu","Bulb (bulbe)","[""Potager""]",
+"buxus sempervirens ","Common boxwood","Buis","True","Plantée","Plant, perenniel (Vivace)","[""Jardin d'entree""]",
+"Calendula officinalis","Calendula / Pot Marigold","Souci","True","Prévu","Plant, medicinal (plante médicinale)","[""Prairie fleurie"",""Jardin medicinale""]",
+"Calystegia sepium","Bindweed","Liseron","True","Sauvage","Rhizome (rhizome)","[""Partout""]","mauvaise herbe envahissante"
+"camellia japonica","Japanese camillia","Camélia du Japon ","False","Plantée","Bush, evergreen (arbuste persistant)","[""Jardin d'entree""]",
+"campanula poscharskyana","Serbian bellflower","Campanule de Poscharsky","False","Plantée","Plant, perenniel (Vivace)","[""Champs de tournoi"",""Jardin formale""]",
+"Centaurea nigra","black knapweed","Centaurée noire","True","Prévu","Plant, perenniel (Vivace)","[""Prairie fleurie""]",
+"centranthus ruber","Red valerian","Valériane rouge","True","Sauvage","Plant, medicinal (plante médicinale)","[""Partout""]",
+"cerastium tomentosum","Snow-in-summer","Céraiste cotonneux","True","Plantée","Bulb (bulbe)","[""Partout""]",
+"Chamaemelum nobile","Chamomile","Camomille","True","Prévu","Plant, medicinal (plante médicinale)","[""Prairie fleurie"",""Jardin medicinale""]",
+"choisya ternata","Mexican orange","Oranger du Mexique","False","Plantée","Bush, deciduous (arbuste caduc)","[""Jardin d'entree""]",
+"circaea lutetiana","Enchanter's nightshade","Circée de Paris","True","Sauvage","Plant, perenniel (Vivace)","[""Partout""]","mauvaise herbe envahissante"
+"cistus populifolius","Poplar-leaved cistus","Ciste à feuilles de peuplier","True","Plantée","Bush, evergreen (arbuste persistant)","[""Espace du puits"",""Jardin d'entree""]",
+"Clematis","Clematis","Clématite","True","Prévu","Climber, vertical (grimpante)","[""Espace du puits""]",
+"Clinopodium vulgare","Wild basil","Basilic sauvage","True","Plantée","Plant, perenniel (Vivace)","[""Prairie fleurie""]",
+"corylus avellana","Common hazel","Noisetier","True","Prévu","Tree (feuillus)","[""Foret""]",
+"Crataegus monogyna","Hawthorne","Aubépine","True","Prévu","Tree (feuillus)","[""Foret""]",
+"Cuminum cyminum","Cumin","Cumin","False","Prévu","Herb, culinary (plante aromatique)","[""Jardin de cuisine""]",
+"cupressus macrocarpa","Monterey cypress","Cyprès de Monterey","False","Plantée","Tree (resineux)","[""Foret""]",
+"cupressus sempervirens","Mediterranean cypress","Cyprès sempervirent","False","Plantée","Tree (resineux)","[""Foret""]",
+"Curcuma longa","Turmeric","Curcuma","False","Prévu","Rhizome (rhizome)","[""Jardin de cuisine"",""Jardin d'hiver""]",
+"Cyclamen hederifolium","ivy-leaved cyclamen","cyclamens de Naples","True","Prévu","Plant, perenniel (Vivace)","[""Champs de tournoi""]",
+"cymbalaria muralis","Kenilworth ivy","Cymbalaire des murs","False","Plantée","Creeper, horizontal (rampante)","[""Jardin d'hiver""]",
+"Daucus carota","Wild carrot","Carotte sauvage ","True","Prévu","Plant, medicinal (plante médicinale)","[""Prairie fleurie"",""Jardin medicinale""]",
+"Echinacea purpurea","Echinacea","Echinacea","False","Prévu","Plant, medicinal (plante médicinale)","[""Jardin medicinale"",""Prairie fleurie""]",
+"Epimedium","Barrenwort (Fairy wings)","Epimedium","True","Prévu","Plant, perenniel (Vivace)","[""Prairie fleurie""]",
+"fagus sylvatica","European beech","Hêtre commun","True","Plantée","Tree (feuillus)","[""Foret""]",
+"Ficus carica","Fig","Figue","True","Prévu","Tree (feuillus)","[""Verriere""]",
+"Foeniculum vulgare","Fennel","Fenouil","False","Prévu","Bulb (bulbe)","[""Jardin de cuisine""]",
+"fragaria vesca","Woodland strawberry","Fraise sauvage","True","Sauvage","Creeper, horizontal (rampante)","[""Partout""]",
+"Fraxinus excelsior","European ash","Frêne élevé","True","Prévu","Tree (feuillus)","[""Foret""]",
+"fuchsia magellanica","Hardy fuchsia","Fuchsia de Magellan","False","Plantée","Bush, evergreen (arbuste persistant)","[""Jardin d'entree""]",
+"fumaria muralis","Fumaria","Fumeterre des murs","True","Sauvage","Plant, perenniel (Vivace)",,
+"Geranium molle","Dove's-foot crane's-bill","Géranium à feuilles molles","True","Plantée","Creeper, horizontal (rampante)","[""Prairie fleurie""]",
+"geranium robertianum","Herb Robert (Stinky bob)","Géranium Herbe à Robert","True","Sauvage","Plant, medicinal (plante médicinale)","[""Champs de tournoi""]",
+"geum urbanum","Wood avens","Herbe de Saint-Benoît","True","Plantée","Plant, medicinal (plante médicinale)","[""Jardin de cuisine""]",
+"Glycyrrhiza glabra","Licorice","Glycyrrhiza glabra","False","Prévu","Bush, evergreen (arbuste persistant)","[""Jardin medicinale""]",
+"hedera helix","English ivy","Lierre grimpant","True","Sauvage","Climber, vertical (grimpante)","[""Allee""]",
+"Helleborus ","Hellebore","Hellébore","True","Prévu","Plant, perenniel (Vivace)","[""Champs de tournoi""]",
+"Hosta","Hosta","Hosta","True","Prévu","Rhizome (rhizome)","[""Champs de tournoi""]",
+"hyachinthoides non-scripta","Bluebell","Jacinthe des bois","True","Sauvage","Bulb (bulbe)","[""Partout""]",
+"hydrangea macrophylla","Bigleaf hydrangea","Hortensia grand-feuille","False","Plantée","Bush, evergreen (arbuste persistant)","[""Verriere"",""Espace du puits""]",
+"Hypericum perforatum","St John’s Wort","Millepertuis","True","Prévu","Plant, medicinal (plante médicinale)","[""Jardin medicinale""]",
+"Hyssopus officinalis","Hyssop","Hysope","False","Prévu","Plant, medicinal (plante médicinale)","[""Jardin medicinale"",""Prairie fleurie""]",
+"Ilex aquifolium","Common holly","Houx","True","Plantée","Tree (resineux)","[""Foret""]",
+"Jasminum nudiflorum","Winter jasmine","Jasmin d'hiver","False","Plantée",,"[""Jardin d'hiver""]",
+"Knautia arvensis","field scabious","Knautie des champs","True","Prévu","Plant, perenniel (Vivace)","[""Prairie fleurie""]",
+"Laurus nobilis","Bay laurel","Laurier","True","Plantée","Bush, evergreen (arbuste persistant)","[""Remise""]",
+"lavandula angustifolia","Lavendar","Lavande","True","Prévu","Plant, medicinal (plante médicinale)","[""Jardin medicinale""]",
+"Leucanthemum vulgare","oxeye daisy","Marguerite vraie","True","Prévu","Plant, perenniel (Vivace)","[""Prairie fleurie""]",
+"ligustrum ovalifolium","California privet","Troène ","False","Plantée","Bush, evergreen (arbuste persistant)","[""Jardin d'entree""]",
+"Lotus corniculatus","birdsfoot deervetch","Lotier corniculé","True","Prévu","Plant, perenniel (Vivace)","[""Prairie fleurie""]",
+"lotus pedunculatus","Big trefoil","Trèfle","True","Sauvage","Plant, perenniel (Vivace)","[""Jardin d'Entree""]",
+"magnolia grandiflora","Southern magnolia","Laurier-tulipier","False","Plantée","Tree (feuillus)","[""Champs de tournoi""]",
+"Malus pumila","Apple","Pomme","True","Plantée","Tree (feuillus)","[""Verriere""]",
+"malus sylvestris","Crabapple","Pomme","False","Plantée","Tree (feuillus)","[""Verriere""]",
+"malva neglecta","common mallow","Guimauve","True","Prévu","Plant, medicinal (plante médicinale)","[""Jardin medicinale""]",
+"Matricaria recutita","Chamomile, German","Camomille","True","Plantée","Plant, medicinal (plante médicinale)","[""Prairie fleurie"",""Jardin medicinale""]",
+"Melissa officinalis","Lemon balm","Mélisse","False","Plantée","Plant, medicinal (plante médicinale)","[""Jardin medicinale""]",
+"Mentha piperita","Peppermint","Menthe poivrée","False","Plantée","Herb, culinary (plante aromatique)","[""Jardin d'hiver""]",
+"Mespilus germanica","Medlar","Néflier","False","Prévu","Tree (feuillus)","[""Verriere""]",
+"Myristica fragrans","Nutmeg","Muscadier","False","Prévu","Tree (resineux)","[""Verriere""]",
+"narcissus pseudonarcissus","Wild daffodil","Jonquille sauvage","False","Plantée","Bulb (bulbe)","[""Partout""]",
+"nigella damascena","Love-in-a-mist","Nigelle de Damas","True","Plantée","Plant, annual (annuelle)","[""Prairie fleurie""]",
+"Ocimum tenuiflorum","Holy basil","Tulsi","False","Prévu","Plant, medicinal (plante médicinale)","[""Jardin medicinale""]",
+"Origanum vulgare","Wild oregano","Origan sauvage","True","Prévu","Herb, culinary (plante aromatique)","[]",
+"osteospermum ecklonis","African daisy","Marguerite d'Afrique","False","Prévu","Plant, perenniel (Vivace)","[""Prairie fleurie""]",
+"Paeonia","Peony","Pivoines","True","Prévu","Plant, perenniel (Vivace)","[""Jardin d'entree""]",
+"Papaver rhoeas","Common poppy","coquelicot","True","Prévu","Plant, perenniel (Vivace)","[""Prairie fleurie"",""Jardin d'entree""]",
+"parthenocissus tricuspidata","Boston ivy","Lierre de Boston","False","Sauvage","Climber, vertical (grimpante)","[""Remise""]","mauvaise herbe envahissante"
+"Pastinaca sativa","Parsnips","Panais","True","Prévu","Plant, annual (annuelle)","[""Potager""]",
+"Phaseolus lunatus","Beans, lima","Haricot de lima","False","Prévu","Climber, vertical (grimpante)","[""Potager""]",
+"Phaseolus vulgaris var Rolande","Beans, green (Rolande)","Haricot vert","False","Prévu","Climber, vertical (grimpante)","[""Potager""]",
+"Phaseolus vulgaris var. eclipse","Beans, black (Eclipse)","Haricot noir","False","Prévu","Climber, vertical (grimpante)","[""Potager""]",
+"pinus pinaster","Maritime pine","Pin maritime","True","Plantée","Tree (resineux)","[""Foret""]",
+"Pinus radiata","Monterey Pine","Pin de Monterey","True","Plantée","Tree (resineux)","[""Foret""]",
+"Pisum sativum","Pea, green","Pois cultivé","False","Prévu","Plant, annual (annuelle)","[""Potager""]",
+"Plantago lanceolata","Plantain","Plantain","True","Sauvage","Plant, medicinal (plante médicinale)","[""Partout""]",
+"Plumbago","Plumbago","Plumbago","True","Prévu","Climber, vertical (grimpante)","[""Espace du puits""]",
+"Poaceae","Grasses","Graminées","True","Prévu","Plant, perenniel (Vivace)","[""Partout""]",
+"Polypodiopsida ","Fern","Fougère","True","Prévu","Plant, perenniel (Vivace)","[""Champs de tournoi"",""Remise""]",
+"polypodium cambricum","Southern polypody (fern)","Polypode du Pays de Galles","True","Sauvage","Plant, perenniel (Vivace)","[""Foret"",""Champs de tournoi""]",
+"polypodium vulgare","Common polypody","Fougère patte de lapin","True","Plantée","Plant, perenniel (Vivace)","[""Foret""]",
+"poplar nigra","Black poplar","Peuplier noir","True","Plantée","Tree (feuillus)","[""Foret""]",
+"potentilla reptans","Creeping cinquefoil","Quintefeuille","True","Sauvage","Creeper, horizontal (rampante)","[""Prairie fleurie""]",
+"primula acaulis","Common primrose","Primevère","True","Sauvage","Plant, perenniel (Vivace)","[""Champs de tournoi"",""Foret"",""Prairie fleurie""]",
+"primula vulgaris","Primrose","Primevère commune","True","Plantée","Plant, perenniel (Vivace)","[""Partout""]",
+"Prunella vulgaris","Common selfheal","Brunelle commune","True","Sauvage","Plant, medicinal (plante médicinale)","[""Partout""]",
+"prunus avium","Sweet cherry","Cerisier des oiseaux","True","Plantée","Tree (feuillus)","[""Foret"",""Jardin d'entree""]",
+"Prunus domestica","European plum","Prunier","False","Plantée","Tree (feuillus)","[""Verriere""]",
+"prunus laurocerasus","Cherry laurel","Laurier cerise","False","Plantée","Plant, perenniel (Vivace)","[""Prairie fleurie"",""Remise""]","mauvaise herbe envahissante, important de contrôler la propagation"
+"Prunus persica","Peach tree","Pêcher commun","False","Prévu","Tree (feuillus)","[""Verriere""]",
+"Prunus spinosa","Sloe tree","Prunellier","True","Plantée","Tree (feuillus)","[""Foret""]",
+"Pseudosasa japonica","Arrow bamboo","Bambou flèche","False","Plantée","Tree (resineux)","[""Remise""]","mauvaise herbe envahissante, important de contrôler la propagation"
+"pyracantha coccinea","Scarlet firethorn","Pyracantha","False","Plantée","Bush, evergreen (arbuste persistant)",,
+"pyrus communis","European pear","Poirier commun","False","Plantée","Tree (feuillus)","[""Verriere""]",
+"Pyrus pyrifolia","Asian pear","Poire d'Asiatique","True","Plantée","Tree (feuillus)","[""Champs de tournoi""]",
+"Quercus ilex","Evergreen oak","Chêne vert","True","Plantée","Tree (resineux)","[""Foret""]",
+"quercus robur","English oak","Chêne pédonculé","True","Plantée","Tree (feuillus)","[""Foret""]",
+"Rheum rhabarbarum","Rhubarb","Rhubarbe des jardins","False","Plantée","Rhizome (rhizome)","[""Jardin d'entree""]",
+"Rhododendron","Rhododendron","Rhododendron","True","Plantée","Bush, evergreen (arbuste persistant)","[""Prairie fleurie"",""La foret"",""La remise"",""Espace du puits""]",
+"rosa arvensis","Field rose","Rosier des champs","True","Plantée","Bush, evergreen (arbuste persistant)","[""Espace du puits""]",
+"Rosa spinosissima","Burnet rose","Rose pimprenelle","True","Plantée","Bush, evergreen (arbuste persistant)","[""Jardin de cuisine"",""Jardin d'entree""]",
+"Rose canina","Dog rose","Rosier des haies","True","Plantée","Bush, evergreen (arbuste persistant)","[""Jardin de cuisine""]",
+"rubus idaeus","Red raspberry","Framboisier","False","Plantée","Creeper, horizontal (rampante)","[""Potager""]",
+"rubus ulmifolius","Elfleaf blackberry","Ronce à feuilles d'Orme","True","Sauvage","Creeper, horizontal (rampante)","[""Champs de tournoi"",""Partout""]",
+"rumex acetosa","Sorrel","Oseille","True","Plantée","Herb, culinary (plante aromatique)","[""Partout""]",
+"rumex conglomeratus","Clustered dock","Oseille ","True","Sauvage","Plant, medicinal (plante médicinale)","[""Partout"",""Jardin medicinale""]",
+"Salix triandra","Almond willow","Saule d'Almond","False","Plantée","Bush, evergreen (arbuste persistant)","[""Jardin medicinale""]",
+"Salvia officinalis","Common sage","Sauge","False","Plantée","Herb, culinary (plante aromatique)","[""Potager"",""Jardin d'hiver""]",
+"Salvia pratensis","Meadow sage","Sauge des prés","True","Prévu","Plant, perenniel (Vivace)","[""Prairie fleurie""]",
+"Salvia rosmarinus","Rosemary","Romarin","False","Plantée","Herb, culinary (plante aromatique)","[""Jardin de cuisine""]",
+"Salvia verbenaca","Clary sage","Sauge sclarée","True","Prévu","Plant, medicinal (plante médicinale)","[""Prairie fleurie"",""Jardin medicinale""]",
+"Sambucus nigra","Black elderberry","Sureau noir","True","Plantée","Tree (feuillus)","[""Foret""]",
+"Satureja hortensis","Summer savory","Sarriette commune","True","Prévu","Herb, culinary (plante aromatique)","[""Jardin de cuisine"",""Jardin d'hiver""]",
+"Silene","campion ","Silène","True","Prévu","Plant, perenniel (Vivace)","[""Prairie fleurie""]",
+"Silybum marianum","Milk Thistle","Chardon-Marie","False","Prévu","Plant, medicinal (plante médicinale)","[""Jardin medicinale"",""Prairie fleurie""]",
+"Sinapis alba","Mustard","Moutarde blanche","True","Prévu","Plant, annual (annuelle)","[""Jardin de cuisine""]",
+"Solanum tuberosum","Potatoes","Pomme de terre","False","Prévu","Rhizome (rhizome)","[""Potager""]",
+"Sonchus oleraceus","Sowthistle","Laiteron maraîcher","True","Sauvage","Herb, culinary (plante aromatique)","[""Partout""]",
+"Sorbus aucuparia","Rowan/European Mountain Ash","Sorbier des oiseleurs","False","Prévu","Tree (feuillus)","[""Foret""]",
+"Stachys byzantina","Lamb's ear / Betony","Epiaire de Byzance","True","Prévu","Plant, medicinal (plante médicinale)","[""Jardin medicinale""]",
+"Stellaria media","Chickweed","mouron des oiseaux","True","Sauvage","Plant, annual (annuelle)","[""Prairie fleurie""]",
+"Stevia rebaudiana","Stevia","Stevia","True","Prévu","Plant, perenniel (Vivace)","[""Jardin medicinale""]",
+"Symphytum officinale","Comfrey","Consoude","True","Prévu","Plant, medicinal (plante médicinale)","[""Jardin medicinale""]",
+"Taraxacum officinale","Dandelion","Pissenlit","True","Sauvage","Creeper, horizontal (rampante)","[""Partout"",""Champs de tournoi""]",
+"taxus baccata","Common yew","If à baies","True","Plantée","Tree (resineux)","[""Foret""]",
+"tetragonia tetragonoides","New zealand spinach","Tétragone cornue","False","Plantée",,"[""Partout""]",
+"thalictrum aquilegiifolium","Columbine meadow-rue","Ancolie","True","Prévu","Plant, perenniel (Vivace)","[""Prairie fleurie""]",
+"thuja plicata","Western red cedar","Genévrier rouge","False","Plantée","Tree (resineux)","[""Remise"",""Foret""]",
+"Thymus vulgaris","Common Thyme","Thym","False","Plantée","Herb, culinary (plante aromatique)","[""Jardin de cuisine"",""Jardin d'hiver""]",
+"Tilia × europaea","Linden (European lime)","Tilleul","True","Plantée","Tree (feuillus)",,
+"tilia platyphyllos","Linden (large-leaved lime)","Tilleul à grandes feuilles","False","Plantée","Tree (feuillus)","[""Foret""]",
+"Trigonella foenum-graecum","Fenugreek","Fenugrec","False","Prévu","Plant, perenniel (Vivace)","[""Jardin de cuisine""]",
+"Ulex europaeus","Gorse","Ajonc d'Europe","False","Prévu","Plant, perenniel (Vivace)","[""Prairie fleurie""]",
+"Ulmus rubra","Slippery Elm","Orme rouge","False","Prévu","Plant, perenniel (Vivace)","[""Jardin medicinale""]",
+"Umbilicus rupestris","Navelwort","Nombril-de-Vénus","True","Sauvage","Plant, perenniel (Vivace)","[""Partout""]",
+"Urtica dioica","Stinging nettle","Ortie","True","Sauvage","Plant, medicinal (plante médicinale)","[""Foret""]","important de contrôler la propagation"
+"valerianella locusta","Corn salad","valérianelle cultivée","False","Sauvage","Plant, perenniel (Vivace)","[""Champs de tournoi"",""Foret""]",
+"veronica chamaedrys","Germander speedwell","Véronique petit-chêne","False","Prévu","Plant, perenniel (Vivace)",,
+"viburnum opulus","Cranberry bush","Viorne trilobée","True","Plantée","Bush, deciduous (arbuste caduc)","[""Prairie fleurie""]",
+"vicia hirsuta","Tiny vetch","Vesce miniscule","True","Sauvage","Plant, annual (annuelle)","[""Prairie fleurie""]",
+"Vigna unguiculata","Peas, black-eyed","Niébé","False","Prévu","Plant, annual (annuelle)","[""Potager""]",
+"Vinca minor","Vinca","Pervenche","True","Prévu","Plant, perenniel (Vivace)","[""Champs de tournoi""]",
+"zantedeschia aethiopica","Calla lilly","Arum","False","Plantée","Bulb (bulbe)","[""Jardin d'entree""]",
