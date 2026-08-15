@@ -78,6 +78,14 @@ run_stage("scripts/20_enrich_pfaf.R")
 
 run_stage("scripts/21_parse_pfaf_uses.R")
 
+run_stage("scripts/22_extract_use_terms.R")
+
+run_stage("scripts/23_normalize_safety.R")
+
+run_stage("scripts/24_extract_plant_parts.R")
+
+run_stage("scripts/25_create_reference_view.R")
+
 run_stage("scripts/29_create_plant_card_view.R")
 
 run_stage("scripts/30_validate_pipeline_quality.R")
