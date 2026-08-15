@@ -119,6 +119,60 @@ clean_section_text <- function(text) {
 }
 
 # ----------------------------------------
+# EXTRACT SUMMARY TABLE FIELD
+# ----------------------------------------
+
+extract_summary_field <- function(
+    page,
+    field_name
+) {
+  
+  if (is.null(page)) {
+    return(NA_character_)
+  }
+  
+  tables <- html_table(
+    html_elements(page, "table"),
+    fill = TRUE
+  )
+  
+  if (length(tables) == 0) {
+    return(NA_character_)
+  }
+  
+  summary_tbl <- tables[[1]]
+  
+  if (nrow(summary_tbl) == 0) {
+    return(NA_character_)
+  }
+  
+  match_row <- which(
+    str_detect(
+      summary_tbl[[1]],
+      regex(field_name, TRUE)
+    )
+  )
+  
+  if (length(match_row) == 0) {
+    return(NA_character_)
+  }
+  
+  value <- summary_tbl[[2]][match_row[1]]
+  
+  value <- str_squish(value)
+  
+  if (
+    is.na(value) ||
+    value == ""
+  ) {
+    return(NA_character_)
+  }
+  
+  value
+  
+}
+
+# ----------------------------------------
 # EXTRACT H2 SECTION
 # ----------------------------------------
 
@@ -232,7 +286,7 @@ fetch_one_plant <- function(latin_name) {
       "Other Uses"
     ),
     
-    hazards = extract_h2_section(
+    hazards = extract_summary_field(
       res$page,
       "Known Hazards"
     ),
