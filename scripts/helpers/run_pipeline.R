@@ -88,6 +88,10 @@ run_stage("scripts/25_create_reference_view.R")
 
 run_stage("scripts/26_create_medicinal_lookup.R")
 
+run_stage("scripts/27_enrich_images.R")
+
+run_stage("scripts/28_validate_images.R")
+
 run_stage("scripts/29_create_plant_card_view.R")
 
 run_stage("scripts/30_validate_pipeline_quality.R")
